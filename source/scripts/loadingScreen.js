@@ -1,0 +1,111 @@
+/**
+ * Basket Blitz loading screen.
+ * Project Settings > Loading Screen > select this script asset.
+ * Shows the game logo on a dark arena-navy background with an orange bar.
+ */
+pc.script.createLoadingScreen((app) => {
+    const createCss = () => {
+        const css = `
+            body {
+                background-color: #10182e;
+            }
+
+            #application-splash-wrapper {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background-color: #10182e;
+            }
+
+            #application-splash {
+                position: absolute;
+                top: calc(50% - 28px);
+                width: 340px;
+                left: calc(50% - 170px);
+            }
+
+            #application-splash img {
+                width: 100%;
+            }
+
+            #progress-bar-container {
+                margin: 20px auto 0 auto;
+                height: 2px;
+                width: 100%;
+                background-color: #0a0f1e;
+            }
+
+            #progress-bar {
+                width: 0%;
+                height: 100%;
+                background-color: #ff7a00;
+            }
+
+            @media (max-width: 480px) {
+                #application-splash {
+                    width: 220px;
+                    left: calc(50% - 110px);
+                }
+            }
+        `;
+
+        const style = document.createElement('style');
+        style.textContent = css;
+        document.head.appendChild(style);
+    };
+
+    const logoUrl = () => {
+        const asset = app.assets.find('Game-Logo-PNG', 'texture');
+        if (asset) return asset.getFileUrl();
+        return `${ASSET_PREFIX}logo.png`;
+    };
+
+    const showSplash = () => {
+        const wrapper = document.createElement('div');
+        wrapper.id = 'application-splash-wrapper';
+        document.body.appendChild(wrapper);
+
+        const splash = document.createElement('div');
+        splash.id = 'application-splash';
+        wrapper.appendChild(splash);
+        splash.style.display = 'none';
+
+        const logo = document.createElement('img');
+        logo.src = logoUrl();
+        splash.appendChild(logo);
+        logo.onload = () => {
+            splash.style.display = 'block';
+        };
+
+        const container = document.createElement('div');
+        container.id = 'progress-bar-container';
+        splash.appendChild(container);
+
+        const bar = document.createElement('div');
+        bar.id = 'progress-bar';
+        container.appendChild(bar);
+    };
+
+    const setProgress = (value) => {
+        const bar = document.getElementById('progress-bar');
+        if (bar) {
+            value = Math.min(1, Math.max(0, value));
+            bar.style.width = `${value * 100}%`;
+        }
+    };
+
+    const hideSplash = () => {
+        document.getElementById('application-splash-wrapper').remove();
+    };
+
+    createCss();
+    showSplash();
+
+    app.on('preload:end', () => {
+        app.off('preload:progress');
+    });
+    app.on('preload:progress', setProgress);
+    app.on('start', hideSplash);
+});
