@@ -2,7 +2,7 @@ pc.script.createLoadingScreen((app) => {
     const createCss = () => {
         const css = `
             body {
-                background-color: #283538;
+                background-color: #10182e;
             }
 
             #application-splash-wrapper {
@@ -11,14 +11,14 @@ pc.script.createLoadingScreen((app) => {
                 left: 0;
                 height: 100%;
                 width: 100%;
-                background-color: #283538;
+                background-color: #10182e;
             }
 
             #application-splash {
                 position: absolute;
                 top: calc(50% - 28px);
-                width: 264px;
-                left: calc(50% - 132px);
+                width: 340px;
+                left: calc(50% - 170px);
             }
 
             #application-splash img {
@@ -29,13 +29,13 @@ pc.script.createLoadingScreen((app) => {
                 margin: 20px auto 0 auto;
                 height: 2px;
                 width: 100%;
-                background-color: #1d292c;
+                background-color: #0a0f1e;
             }
 
             #progress-bar {
                 width: 0%;
                 height: 100%;
-                background-color: #f60;
+                background-color: #ff7a00;
             }
 
             @media (max-width: 480px) {
